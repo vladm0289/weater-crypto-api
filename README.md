@@ -61,7 +61,7 @@ Make sure to replace your_user and your_database with the actual PostgreSQL user
 
 ### 4. Configure Environment Variables
 
-Check a `.env` file in the root of the project with required environment variables.
+Create a `.env` file in the root of the project with required environment variables, example you can check in the root of the project in file .env.example
 
 ### 5. Run Prisma Migrations
 
