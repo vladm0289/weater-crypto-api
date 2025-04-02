@@ -1,0 +1,79 @@
+{
+  "name": "spinanda",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "ts-node-dev --respawn --transpile-only -r tsconfig-paths/register src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "lint": "npx eslint './src/**/*.ts' --fix",
+    "typecheck": "tsc --noEmit",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:cov": "jest --coverage"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@prisma/client": "^6.5.0",
+    "axios": "^1.8.4",
+    "axios-retry": "^4.5.0",
+    "bcrypt": "^5.1.1",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
+    "pg": "^8.14.1",
+    "prisma": "^6.5.0",
+    "reflect-metadata": "^0.2.2",
+    "supertest": "^7.1.0",
+    "swagger-ui-express": "^5.0.1",
+    "tsconfig-paths": "^4.2.0",
+    "tsyringe": "^4.8.0",
+    "uuid": "^11.1.0",
+    "winston": "^3.17.0"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.1",
+    "@types/jest": "^29.5.14",
+    "@types/jsonwebtoken": "^9.0.9",
+    "@types/morgan": "^1.9.9",
+    "@types/node": "^22.13.14",
+    "@typescript-eslint/eslint-plugin": "^8.29.0",
+    "eslint": "^8.0.1",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.3.1",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.8.2"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "ts"
+    ],
+    "rootDir": "src",
+    "testRegex": ".*\\.spec\\.ts$",
+    "transform": {
+      "^.+\\.(t|j)s$": "ts-jest"
+    },
+    "collectCoverageFrom": [
+      "**/*.{ts,js}"
+    ],
+    "coveragePathIgnorePatterns": [
+      "/__shared/",
+      "/index.ts"
+    ],
+    "coverageDirectory": "../coverage",
+    "testEnvironment": "node",
+    "moduleNameMapper": {
+      "^@spinanda/(.*)$": "<rootDir>/../src/$1",
+      "^@shared/(.*)$": "<rootDir>/../src/__shared/$1"
+    }
+  }
+}

@@ -1,0 +1,496 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "User Management API",
+    "description": "API for managing users with various roles",
+    "version": "1.0.0",
+    "contact": {
+      "name": "API Support",
+      "email": "support@example.com"
+    }
+  },
+  "host": "localhost:3001",
+  "basePath": "/",
+  "schemes": ["http"],
+  "paths": {
+    "/auth/register": {
+      "post": {
+        "tags": ["Authentication API"],
+        "description": "Register a new user",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "user",
+            "description": "User registration data",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/RegisterUserDto"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "User successfully registered",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "email must be an email"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": ["Authentication API"],
+        "description": "Login an existing user",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "credentials",
+            "description": "User login credentials",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/LoginUserDto"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Login successful, returns user data and JWT token",
+            "schema": {
+              "$ref": "#/definitions/UserLoginResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Invalid email or password"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/profile": {
+      "get": {
+        "tags": ["Authentication API"],
+        "description": "Get the authenticated user's profile",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string",
+            "required": true,
+            "description": "JWT token for user authentication"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User profile",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Invalid or expired token"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users": {
+      "get": {
+        "tags": ["User Management API"],
+        "description": "Get a list of all users",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string",
+            "required": true,
+            "description": "JWT token for user authentication"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of users",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/User"
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Access denied"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{id}": {
+      "get": {
+        "tags": ["User Management API"],
+        "description": "Get user by ID",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "type": "string",
+            "required": true,
+            "description": "User ID"
+          },
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string",
+            "required": true,
+            "description": "JWT token for user authentication"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User found",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Access denied"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": ["User Management API"],
+        "description": "Update user by ID",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "type": "string",
+            "required": true,
+            "description": "User ID"
+          },
+          {
+            "in": "body",
+            "name": "user",
+            "description": "Updated user data",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UpdateUserDto"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string",
+            "required": true,
+            "description": "JWT token for user authentication"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User successfully updated",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Invalid UUID format for user ID"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Access denied"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["User Management API"],
+        "description": "Delete user by ID",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "type": "string",
+            "required": true,
+            "description": "User ID to delete"
+          },
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string",
+            "required": true,
+            "description": "JWT token for user authentication"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User successfully deleted"
+          },
+          "400": {
+            "description": "Bad request",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Invalid UUID format for user ID"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Access denied"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/data": {
+      "get": {
+        "tags": ["Weather and Crypto API"],
+        "description": "Get weather and cryptocurrency data",
+        "parameters": [
+          {
+            "name": "city",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": "The name of the city to get the weather data for"
+          },
+          {
+            "name": "currency",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": "The cryptocurrency to get the price for (e.g., bitcoin, ethereum)"
+          },
+          {
+            "name": "refresh",
+            "in": "query",
+            "required": false,
+            "type": "boolean",
+            "default": false,
+            "description": "If true, forces a refresh of the cached data"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully fetched weather and cryptocurrency data",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "city": {
+                  "type": "string",
+                  "description": "The city name"
+                },
+                "temperature": {
+                  "type": "string",
+                  "description": "The current temperature in Celsius"
+                },
+                "weather": {
+                  "type": "string",
+                  "description": "A description of the current weather"
+                },
+                "crypto": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "description": "The name of the cryptocurrency"
+                    },
+                    "price_usd": {
+                      "type": "number",
+                      "description": "The price of the cryptocurrency in USD"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "city must be shorter than or equal to 16 characters"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "User": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "c0f0ff87-45b6-4062-a93d-cb1f24c7ad5a"
+        },
+        "name": {
+          "type": "string",
+          "example": "John Doe"
+        },
+        "email": {
+          "type": "string",
+          "example": "john.doe@example.com"
+        },
+        "role": {
+          "type": "string",
+          "enum": ["user", "admin"],
+          "example": "user"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2025-03-30T12:34:56Z"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2025-03-30T12:34:56Z"
+        }
+      }
+    },
+    "RegisterUserDto": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "example": "user@example.com"
+        },
+        "name": {
+          "type": "string",
+          "example": "John Doe"
+        },
+        "password": {
+          "type": "string",
+          "example": "securepassword123"
+        },
+        "role": {
+          "type": "string",
+          "enum": ["user", "admin"],
+          "example": "user"
+        }
+      }
+    },
+    "LoginUserDto": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "example": "user@example.com"
+        },
+        "password": {
+          "type": "string",
+          "example": "securepassword123"
+        }
+      }
+    },
+    "UpdateUserDto": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "example": "newuser@example.com"
+        },
+        "name": {
+          "type": "string",
+          "example": "John Doe Updated"
+        },
+        "role": {
+          "type": "string",
+          "enum": ["user", "admin"],
+          "example": "admin"
+        },
+        "password": {
+          "type": "string",
+          "example": "newSecurePassword123"
+        }
+      }
+    },
+    "UserLoginResponse": {
+      "type": "object",
+      "properties": {
+        "user": {
+          "$ref": "#/definitions/User"
+        },
+        "token": {
+          "type": "string",
+          "example": "jwt-token-example"
+        }
+      }
+    }
+  }
+}
