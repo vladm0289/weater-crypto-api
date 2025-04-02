@@ -1,7 +1,0 @@
-{
-  "dotenv.enableAutocloaking": false,
-  "editor.formatOnSave": true,
-  "[prisma]": {
-    "editor.defaultFormatter": "Prisma.prisma"
-  }
-}
