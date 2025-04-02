@@ -21,7 +21,7 @@ cd project-name
 npm install
 ```
 
-### 3. Setuo the database
+### 3. Setup the database
 
 You have two options for setting up the database:
 
