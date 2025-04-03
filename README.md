@@ -11,8 +11,8 @@ This project provides an API for managing users with various roles (admin and us
 Clone the repository and navigate to the project folder:
 
 ```bash
-git clone https://github.com/yourusername/project-name.git
-cd project-name
+git clone https://github.com/vladm0289/weater-crypto-api.git
+cd weater-crypto-api
 ```
 
 ### 2. Install dependencies
